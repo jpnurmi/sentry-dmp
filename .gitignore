@@ -1,0 +1,10 @@
+/build/
+/.local/
+/Makefile.local
+/.env
+/.sentryclirc
+/.sentry-native/
+__pycache__/
+*.dmp
+*.exe
+*.pdb
