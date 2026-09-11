@@ -24,6 +24,8 @@ processing:
   kafka_config:
     - name: bootstrap.servers
       value: 127.0.0.1:9092
+    - name: message.max.bytes
+      value: "50000000"
   redis: redis://127.0.0.1:6379
   objectstore:
     objectstore_url: http://127.0.0.1:8888/
@@ -87,6 +89,8 @@ Login: admin@sentry.io / admin
        SENTRY_ORG="<local-org>" \
        SENTRY_PROJECT="<local-project>" \
        SENTRY_AUTH_TOKEN="<local-token>"
+
+   Replace `hang` with `cpp` for the C++ exception test.
 
 Run make ip on this server for <server-lan-ip>.
 Keep the key and project ID from the DSN.

@@ -4,6 +4,7 @@ Run `make` for prerequisites, configuration, and available commands.
 
 - **Linux/macOS:** `make sentry`, then `make relay` in another terminal.
 - **Hang test:** `make hang SENTRY_DSN="<dsn>"`.
+- **C++ exception test:** `make cpp SENTRY_DSN="<dsn>"`.
 
 The targets require existing checkouts and print setup instructions as needed.
 
@@ -134,6 +135,35 @@ make hang \
     SENTRY_PROJECT="<local-project>" \
     SENTRY_AUTH_TOKEN="<local-token>"
 ```
+
+## C++ exception test
+
+Exercises server-side processing of the native event and minidump produced for
+an uncaught C++ exception. The build enables the C++ integration with
+`SENTRY_INTEGRATION_CPP`; the app throws a `std::runtime_error` and uses
+`SENTRY_CRASH_REPORTING_MODE_NATIVE_WITH_MINIDUMP` so Relay and Sentry can be
+developed against both payloads.
+
+Run the case using the DSN from **Client Keys (DSN)**:
+
+```bash
+make cpp SENTRY_DSN="<dsn>"
+```
+
+The event has the `test.case=cpp-exception` tag. Before running it, set
+`SENTRY_NATIVE_DIR` to a sentry-native checkout containing the C++ integration.
+Use the local DSN and sentry-cli overrides described for the hang test when
+testing local Relay and Sentry checkouts.
+
+The native event contains an exception with:
+
+- `type`: a platform-specific name ending in `runtime_error`
+- `value`: `something went wrong`
+- `mechanism.type`: `cpp_exception`
+- `mechanism.handled`: `false`
+
+Relay and Sentry should preserve this metadata while using the minidump for the
+exception stack.
 
 ## Configuration
 
